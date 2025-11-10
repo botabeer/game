@@ -37,6 +37,7 @@ class ScrambleWordGame(BaseGame):
         ]
         
         random.shuffle(self.words)
+        self.current_hint = ""  # لحفظ التلميح الحالي
     
     def scramble_word(self, word):
         """خلط حروف الكلمة"""
@@ -63,13 +64,13 @@ class ScrambleWordGame(BaseGame):
         hint = word_data["hint"]
         
         self.current_answer = word
+        self.current_hint = hint  # حفظ التلميح
         scrambled = self.scramble_word(word)
         
-        message = f"🧩 رتب الحروف ({self.current_question + 1}/{self.questions_count})\n\n"
-        message += f"🔤 الحروف: {' - '.join(scrambled)}\n\n"
-        message += f"💡 تلميح: {hint}\n\n"
-        message += "✏️ رتب الحروف لتكوين الكلمة الصحيحة\n"
-        message += "• لمح - للحصول على تلميح إضافي\n"
+        message = f"رتب الحروف ({self.current_question + 1}/{self.questions_count})\n\n"
+        message += f"الحروف: {' - '.join(scrambled)}\n\n"
+        message += "رتب الحروف لتكوين الكلمة الصحيحة\n\n"
+        message += "• لمح - للحصول على تلميح\n"
         message += "• جاوب - لعرض الإجابة"
         
         return TextSendMessage(text=message)
@@ -85,7 +86,7 @@ class ScrambleWordGame(BaseGame):
         
         # أوامر خاصة
         if user_answer == 'لمح':
-            hint = self.get_hint()
+            hint = f"💡 تلميح: {self.current_hint}"
             return {
                 'message': hint,
                 'response': TextSendMessage(text=hint),
