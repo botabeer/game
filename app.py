@@ -703,225 +703,225 @@ def handle_message(event):
         
         logger.info(f"رسالة من {display_name}: {text}")
     
-        # الأوامر الأساسية
-        if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
-        flex_message = {
-            "type": "bubble",
-            "size": "mega",
-            "header": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "منصة الألعاب",
-                        "weight": "bold",
-                        "size": "xxl",
-                        "color": "#1a1a1a",
-                        "align": "center"
-                    },
-                    {
-                        "type": "text",
-                        "text": f"مرحباً {display_name}",
-                        "size": "md",
-                        "color": "#6a6a6a",
-                        "align": "center",
-                        "margin": "sm"
-                    }
-                ],
-                "backgroundColor": "#ffffff",
-                "paddingAll": "24px"
-            },
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "خطوات البدء",
-                                "weight": "bold",
-                                "size": "md",
-                                "color": "#2a2a2a"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "md",
-                                "color": "#e8e8e8"
-                            }
-                        ],
-                        "spacing": "sm"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "1",
-                                        "size": "sm",
-                                        "color": "#ffffff",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "اضغط على زر انضم للتسجيل",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#2a2a2a",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "2",
-                                        "size": "sm",
-                                        "color": "#2a2a2a",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "اختر لعبة من الأزرار أدناه",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#f5f5f5",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md",
-                                "margin": "sm"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "3",
-                                        "size": "sm",
-                                        "color": "#2a2a2a",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "ابدأ اللعب واجمع النقاط",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#f5f5f5",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md",
-                                "margin": "sm"
-                            }
-                        ],
-                        "margin": "md"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "15 لعبة متاحة",
-                                "size": "xs",
-                                "color": "#9a9a9a",
-                                "align": "center"
-                            },
-                            {
-                                "type": "text",
-                                "text": "إجاباتك تُحسب تلقائياً بعد التسجيل",
-                                "size": "xs",
-                                "color": "#9a9a9a",
-                                "align": "center",
-                                "margin": "xs"
-                            }
-                        ],
-                        "margin": "lg"
-                    }
-                ],
-                "backgroundColor": "#ffffff",
-                "paddingAll": "20px"
-            },
-            "footer": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "separator",
-                        "color": "#e8e8e8"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "contents": [
-                            {
-                                "type": "button",
-                                "action": {
-                                    "type": "message",
-                                    "label": "انضم",
-                                    "text": "انضم"
+# الأوامر الأساسية
+if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
+    flex_message = {
+        "type": "bubble",
+        "size": "mega",
+        "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "منصة الألعاب",
+                    "weight": "bold",
+                    "size": "xxl",
+                    "color": "#1a1a1a",
+                    "align": "center"
+                },
+                {
+                    "type": "text",
+                    "text": f"مرحباً {display_name}",
+                    "size": "md",
+                    "color": "#6a6a6a",
+                    "align": "center",
+                    "margin": "sm"
+                }
+            ],
+            "backgroundColor": "#ffffff",
+            "paddingAll": "24px"
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "خطوات البدء",
+                            "weight": "bold",
+                            "size": "md",
+                            "color": "#2a2a2a"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "md",
+                            "color": "#e8e8e8"
+                        }
+                    ],
+                    "spacing": "sm"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "1",
+                                    "size": "sm",
+                                    "color": "#ffffff",
+                                    "align": "center",
+                                    "weight": "bold",
+                                    "flex": 0
                                 },
-                                "style": "primary",
-                                "color": "#2a2a2a",
-                                "height": "sm"
-                            },
-                            {
-                                "type": "button",
-                                "action": {
-                                    "type": "message",
-                                    "label": "مساعدة",
-                                    "text": "مساعدة"
+                                {
+                                    "type": "text",
+                                    "text": "اضغط على زر انضم للتسجيل",
+                                    "size": "sm",
+                                    "color": "#4a4a4a",
+                                    "flex": 1,
+                                    "margin": "md",
+                                    "wrap": True
+                                }
+                            ],
+                            "backgroundColor": "#2a2a2a",
+                            "cornerRadius": "md",
+                            "paddingAll": "12px",
+                            "spacing": "md"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "2",
+                                    "size": "sm",
+                                    "color": "#2a2a2a",
+                                    "align": "center",
+                                    "weight": "bold",
+                                    "flex": 0
                                 },
-                                "style": "secondary",
-                                "height": "sm"
-                            }
-                        ],
-                        "spacing": "sm",
-                        "margin": "md"
-                    }
-                ],
-                "backgroundColor": "#f8f8f8",
-                "paddingAll": "16px"
-            }
+                                {
+                                    "type": "text",
+                                    "text": "اختر لعبة من الأزرار أدناه",
+                                    "size": "sm",
+                                    "color": "#4a4a4a",
+                                    "flex": 1,
+                                    "margin": "md",
+                                    "wrap": True
+                                }
+                            ],
+                            "backgroundColor": "#f5f5f5",
+                            "cornerRadius": "md",
+                            "paddingAll": "12px",
+                            "spacing": "md",
+                            "margin": "sm"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "3",
+                                    "size": "sm",
+                                    "color": "#2a2a2a",
+                                    "align": "center",
+                                    "weight": "bold",
+                                    "flex": 0
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "ابدأ اللعب واجمع النقاط",
+                                    "size": "sm",
+                                    "color": "#4a4a4a",
+                                    "flex": 1,
+                                    "margin": "md",
+                                    "wrap": True
+                                }
+                            ],
+                            "backgroundColor": "#f5f5f5",
+                            "cornerRadius": "md",
+                            "paddingAll": "12px",
+                            "spacing": "md",
+                            "margin": "sm"
+                        }
+                    ],
+                    "margin": "md"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "تم إنشاء هذا البوت بواسطة عبير الدوسري",
+                            "size": "xs",
+                            "color": "#9a9a9a",
+                            "align": "center"
+                        },
+                        {
+                            "type": "text",
+                            "text": "إجاباتك تُحسب تلقائياً بعد التسجيل",
+                            "size": "xs",
+                            "color": "#9a9a9a",
+                            "align": "center",
+                            "margin": "xs"
+                        }
+                    ],
+                    "margin": "lg"
+                }
+            ],
+            "backgroundColor": "#ffffff",
+            "paddingAll": "20px"
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "separator",
+                    "color": "#e8e8e8"
+                },
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "action": {
+                                "type": "message",
+                                "label": "انضم",
+                                "text": "انضم"
+                            },
+                            "style": "primary",
+                            "color": "#2a2a2a",
+                            "height": "sm"
+                        },
+                        {
+                            "type": "button",
+                            "action": {
+                                "type": "message",
+                                "label": "مساعدة",
+                                "text": "مساعدة"
+                            },
+                            "style": "secondary",
+                            "height": "sm"
+                        }
+                    ],
+                    "spacing": "sm",
+                    "margin": "md"
+                }
+            ],
+            "backgroundColor": "#f8f8f8",
+            "paddingAll": "16px"
         }
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage(alt_text="مرحباً", contents=flex_message, quick_reply=get_quick_reply())
-        )
-        return
+    }
+
+    line_bot_api.reply_message(
+        event.reply_token,
+        FlexSendMessage(alt_text="مرحباً", contents=flex_message, quick_reply=get_quick_reply())
+    )
+    return
     
     elif text in ['أكثر', 'المزيد', 'more']:
         more_message = {
