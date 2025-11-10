@@ -33,6 +33,7 @@ class LettersWordsGame(BaseGame):
         
         random.shuffle(self.letter_sets)
         self.found_words = set()
+        self.required_words = 3  # عدد الكلمات المطلوبة
     
     def start_game(self):
         """بدء اللعبة"""
@@ -45,11 +46,10 @@ class LettersWordsGame(BaseGame):
         self.current_answer = letter_set["words"]
         self.found_words.clear()
         
-        message = f"📝 تكوين كلمات ({self.current_question + 1}/{self.questions_count})\n\n"
-        message += f"🔤 الحروف المتاحة:\n\n"
+        message = f"تكوين كلمات ({self.current_question + 1}/{self.questions_count})\n\n"
+        message += f"الحروف المتاحة:\n\n"
         message += f"『 {letter_set['letters']} 』\n\n"
-        message += "💡 كوّن كلمة من هذه الحروف\n"
-        message += "• يمكنك تكوين أكثر من كلمة\n"
+        message += f"كوّن {self.required_words} كلمات من هذه الحروف\n"
         message += "• اكتب 'تم' للانتقال للسؤال التالي"
         
         return TextSendMessage(text=message)
@@ -61,13 +61,13 @@ class LettersWordsGame(BaseGame):
         
         # الانتقال للسؤال التالي
         if user_answer.strip() in ['تم', 'التالي', 'next']:
-            if self.found_words:
+            if len(self.found_words) >= self.required_words:
                 next_q = self.next_question()
                 
                 if isinstance(next_q, dict) and next_q.get('game_over'):
                     return next_q
                 
-                message = f"➡️ ننتقل للسؤال التالي\n\n"
+                message = f"ننتقل للسؤال التالي\n\n"
                 if hasattr(next_q, 'text'):
                     message += next_q.text
                 
@@ -77,9 +77,10 @@ class LettersWordsGame(BaseGame):
                     'points': 0
                 }
             else:
+                remaining = self.required_words - len(self.found_words)
                 return {
-                    'message': "⚠️ يجب أن تجد كلمة واحدة على الأقل!",
-                    'response': TextSendMessage(text="⚠️ يجب أن تجد كلمة واحدة على الأقل!"),
+                    'message': f"يجب أن تجد {remaining} كلمة أخرى على الأقل!",
+                    'response': TextSendMessage(text=f"يجب أن تجد {remaining} كلمة أخرى على الأقل!"),
                     'points': 0
                 }
         
