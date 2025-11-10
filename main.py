@@ -682,23 +682,25 @@ def callback():
     
     return 'OK'
 
+# تحسين الأداء - معالجة الرسائل بشكل أسرع
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    """معالج الرسائل الرئيسي"""
-    user_id = event.source.user_id
-    text = event.message.text.strip()
-    
-    if not check_rate_limit(user_id):
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="⚠️ عدد كبير من الرسائل! انتظر دقيقة.")
-        )
-        return
-    
-    display_name = get_user_profile_safe(user_id)
-    game_id = event.source.group_id if hasattr(event.source, 'group_id') else user_id
-    
-    logger.info(f"رسالة من {display_name}: {text}")
+    """معالج الرسائل الرئيسي - محسّن للسرعة"""
+    try:
+        user_id = event.source.user_id
+        text = event.message.text.strip()
+        
+        if not check_rate_limit(user_id):
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="⚠️ عدد كبير من الرسائل! انتظر دقيقة.")
+            )
+            return
+        
+        display_name = get_user_profile_safe(user_id)
+        game_id = event.source.group_id if hasattr(event.source, 'group_id') else user_id
+        
+        logger.info(f"رسالة من {display_name}: {text}")
     
     # الأوامر الأساسية
     if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
@@ -851,7 +853,7 @@ def handle_message(event):
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "تم إنشاء هذا البوت بواسطة عبير الدوسري",
+                                "text": "15 لعبة متاحة",
                                 "size": "xs",
                                 "color": "#9a9a9a",
                                 "align": "center"
@@ -1181,9 +1183,15 @@ def handle_message(event):
             # بناء قائمة اللاعبين
             players_list = []
             for i, leader in enumerate(leaders, 1):
-                rank_bg = "#f5f5f5"
-                rank_color = "#ffffff" if i <= 3 else "#2a2a2a"
-                name_color = "#1a1a1a" if i <= 3 else "#4a4a4a"
+                # الألوان المحدّثة
+                if i <= 3:
+                    rank_bg = "#4a4a4a"  # رمادي غامق للمراكز الثلاثة الأولى
+                    rank_color = "#ffffff"  # نص أبيض
+                    name_color = "#ffffff"  # اسم أبيض
+                else:
+                    rank_bg = "#f5f5f5"  # رمادي فاتح للباقي
+                    rank_color = "#2a2a2a"  # نص أسود
+                    name_color = "#4a4a4a"  # اسم رمادي
                 
                 player_box = {
                     "type": "box",
@@ -1439,7 +1447,7 @@ def handle_message(event):
             
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=" لعبة التوافق!\n\nاكتب اسمين مفصولين بمسافة\nمثال: الجدي القوس", quick_reply=get_quick_reply())
+                TextSendMessage(text="💖 لعبة التوافق!\n\nاكتب اسمين مفصولين بمسافة\nمثال: أحمد فاطمة", quick_reply=get_quick_reply())
             )
             return
         
@@ -1480,8 +1488,12 @@ def handle_message(event):
                 else:
                     response = result.get('response', TextSendMessage(text=result.get('message', '')))
                     
-                    if hasattr(response, 'quick_reply') and response.quick_reply is None:
+                    # إضافة الأزرار دائماً
+                    if isinstance(response, TextSendMessage):
                         response.quick_reply = get_quick_reply()
+                    elif isinstance(response, FlexSendMessage):
+                        # لا نضيف quick_reply للـ Flex Messages
+                        pass
                 
                 line_bot_api.reply_message(event.reply_token, response)
             return
