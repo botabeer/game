@@ -93,10 +93,11 @@ class HumanAnimalPlantGame(BaseGame):
         self.current_letter = self.letters[self.current_question % len(self.letters)]
         self.current_category = random.choice(self.categories)
         
-        message = f"🎮 إنسان حيوان نبات ({self.current_question + 1}/{self.questions_count})\n\n"
-        message += f"🔤 الحرف: {self.current_letter}\n"
-        message += f"📋 الفئة: {self.current_category}\n\n"
-        message += f"💡 اكتب {self.current_category} يبدأ بحرف {self.current_letter}"
+        message = f"إنسان حيوان نبات ({self.current_question + 1}/{self.questions_count})\n\n"
+        message += f"الحرف: {self.current_letter}\n"
+        message += f"الفئة: {self.current_category}\n\n"
+        message += f"اكتب {self.current_category} يبدأ بحرف {self.current_letter}\n\n"
+        message += "• جاوب - لعرض إجابة مقترحة"
         
         return TextSendMessage(text=message)
     
@@ -108,6 +109,33 @@ class HumanAnimalPlantGame(BaseGame):
         # التحقق من أن المستخدم لم يجب بعد
         if user_id in self.answered_users:
             return None
+        
+        # أمر جاوب
+        if user_answer == 'جاوب':
+            # اختيار إجابة عشوائية من القاعدة
+            suggested = None
+            if self.current_category in self.answers_db:
+                if self.current_letter in self.answers_db[self.current_category]:
+                    answers_list = self.answers_db[self.current_category][self.current_letter]
+                    if answers_list:
+                        suggested = random.choice(answers_list)
+            
+            if suggested:
+                reveal = f"إجابة مقترحة: {suggested}"
+            else:
+                reveal = f"إجابة مقترحة: أي كلمة تبدأ بحرف {self.current_letter}"
+            
+            next_q = self.next_question()
+            
+            if isinstance(next_q, dict) and next_q.get('game_over'):
+                return next_q
+            
+            message = f"{reveal}\n\n" + next_q.text if hasattr(next_q, 'text') else reveal
+            return {
+                'message': message,
+                'response': TextSendMessage(text=message),
+                'points': 0
+            }
         
         # تطبيع الإجابة
         normalized_answer = self.normalize_text(user_answer)
@@ -135,7 +163,7 @@ class HumanAnimalPlantGame(BaseGame):
                 next_q['points'] = points
                 return next_q
             
-            message = f"✅ إجابة مقبولة يا {display_name}!\n+{points} نقطة\n\n"
+            message = f"إجابة مقبولة يا {display_name}\n+{points} نقطة\n\n"
             if hasattr(next_q, 'text'):
                 message += next_q.text
             
