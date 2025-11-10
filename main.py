@@ -1181,7 +1181,7 @@ def handle_message(event):
             # بناء قائمة اللاعبين
             players_list = []
             for i, leader in enumerate(leaders, 1):
-                rank_bg = "#A9A9A9" if i <= 3 else "#f5f5f5"
+                rank_bg = "#f5f5f5"
                 rank_color = "#ffffff" if i <= 3 else "#2a2a2a"
                 name_color = "#1a1a1a" if i <= 3 else "#4a4a4a"
                 
