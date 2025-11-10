@@ -1,209 +1,184 @@
-import random
-import re
+"""
+لعبة تخمين الأغنية من كلماتها
+"""
 from linebot.models import TextSendMessage
+from .base_game import BaseGame
+import random
 
-class SongGame:
+
+class SongGame(BaseGame):
+    """لعبة تخمين الأغنية"""
+    
     def __init__(self, line_bot_api):
-        self.line_bot_api = line_bot_api
-        self.current_song = None
-        self.correct_answer = None
-
-        # 🎶 100 أغنية من الفنانين العرب الأكثر شهرة (بعد التصحيح)
+        super().__init__(line_bot_api, questions_count=10)
+        
+        # قائمة أغاني مشهورة مع مقاطع منها
         self.songs = [
-            # عبدالمجيد عبدالله
-            {"lyrics": "أحبك ليه أنا مدري", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-            {"lyrics": "احس اني لقيتك", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-            {"lyrics": "ما يصح إلا الصحيح", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-            {"lyrics": "قلبي على طول مشتاق", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-            {"lyrics": "رهيب", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-            {"lyrics": "روحي تحبك", "artist": "عبدالمجيد عبدالله", "nationality": "سعودي"},
-
-            # ماجد المهندس
-            {"lyrics": "أمر الله", "artist": "ماجد المهندس", "nationality": "عراقي"},
-            {"lyrics": "بعثرتني", "artist": "ماجد المهندس", "nationality": "عراقي"},
-            {"lyrics": "أنساك ما أقدر", "artist": "ماجد المهندس", "nationality": "عراقي"},
-            {"lyrics": "سيد الساحة", "artist": "ماجد المهندس", "nationality": "عراقي"},
-            {"lyrics": "كلي ملكك", "artist": "ماجد المهندس", "nationality": "عراقي"},
-            {"lyrics": "تناديك", "artist": "ماجد المهندس", "nationality": "عراقي"},
-
-            # أصالة نصري
-            {"lyrics": "نكتشف مر الحقيقة", "artist": "أصالة نصري", "nationality": "سورية"},
-            {"lyrics": "يا مغرور", "artist": "أصالة نصري", "nationality": "سورية"},
-            {"lyrics": "أخبار جريئة", "artist": "أصالة نصري", "nationality": "سورية"},
-            {"lyrics": "صدفة", "artist": "أصالة نصري", "nationality": "سورية"},
-            {"lyrics": "بنت أكابر", "artist": "أصالة نصري", "nationality": "سورية"},
-
-            # راشد الماجد
-            {"lyrics": "عيونه سود", "artist": "راشد الماجد", "nationality": "سعودي"},
-            {"lyrics": "كنت أبحث عنك", "artist": "راشد الماجد", "nationality": "سعودي"},
-            {"lyrics": "يا حبيبي استنى", "artist": "راشد الماجد", "nationality": "سعودي"},
-            {"lyrics": "تعبت وأنا أنادي", "artist": "راشد الماجد", "nationality": "سعودي"},
-            {"lyrics": "ياللي شاغل فكري", "artist": "راشد الماجد", "nationality": "سعودي"},
-
-            # محمد عبده
-            {"lyrics": "فوق هام السحب", "artist": "محمد عبده", "nationality": "سعودي"},
-            {"lyrics": "ودي أشوفك كل يوم", "artist": "محمد عبده", "nationality": "سعودي"},
-            {"lyrics": "يا أول الليل", "artist": "محمد عبده", "nationality": "سعودي"},
-            {"lyrics": "الأماكن", "artist": "محمد عبده", "nationality": "سعودي"},
-            {"lyrics": "ليلة خميس", "artist": "محمد عبده", "nationality": "سعودي"},
-
-            # عمرو دياب
-            {"lyrics": "نور العين", "artist": "عمرو دياب", "nationality": "مصري"},
-            {"lyrics": "تملي معاك", "artist": "عمرو دياب", "nationality": "مصري"},
-            {"lyrics": "قدام مرايتها", "artist": "عمرو دياب", "nationality": "مصري"},
-            {"lyrics": "حبيبي ولا على باله", "artist": "عمرو دياب", "nationality": "مصري"},
-            {"lyrics": "معاك قلبي", "artist": "عمرو دياب", "nationality": "مصري"},
-            {"lyrics": "عيش بشوقك", "artist": "عمرو دياب", "nationality": "مصري"},
-
-            # تامر حسني
-            {"lyrics": "ناسيني ليه", "artist": "تامر حسني", "nationality": "مصري"},
-            {"lyrics": "عيشني معاك", "artist": "تامر حسني", "nationality": "مصري"},
-            {"lyrics": "لو بعتلك جواب", "artist": "تامر حسني", "nationality": "مصري"},
-            {"lyrics": "حاسس بيها", "artist": "تامر حسني", "nationality": "مصري"},
-            {"lyrics": "صباح الخير", "artist": "تامر حسني", "nationality": "مصري"},
-
-            # أحلام
-            {"lyrics": "مستعجل ليه", "artist": "أحلام", "nationality": "إماراتية"},
-            {"lyrics": "رقم واحد", "artist": "أحلام", "nationality": "إماراتية"},
-            {"lyrics": "هذا أنا", "artist": "أحلام", "nationality": "إماراتية"},
-            {"lyrics": "على كثر الوفا", "artist": "أحلام", "nationality": "إماراتية"},
-            {"lyrics": "أبرحل", "artist": "أحلام", "nationality": "إماراتية"},
-
-            # شيرين عبد الوهاب
-            {"lyrics": "مشاعر", "artist": "شيرين عبد الوهاب", "nationality": "مصرية"},
-            {"lyrics": "اه يا ليل", "artist": "شيرين عبد الوهاب", "nationality": "مصرية"},
-            {"lyrics": "حبيبي يا نبض الحياة", "artist": "شيرين عبد الوهاب", "nationality": "مصرية"},
-            {"lyrics": "بتحب ناس", "artist": "شيرين عبد الوهاب", "nationality": "مصرية"},
-            {"lyrics": "جرح تاني", "artist": "شيرين عبد الوهاب", "nationality": "مصرية"},
-
-            # كاظم الساهر
-            {"lyrics": "زيديني عشقاً", "artist": "كاظم الساهر", "nationality": "عراقي"},
-            {"lyrics": "انتهى المشوار", "artist": "كاظم الساهر", "nationality": "عراقي"},
-            {"lyrics": "حافية القدمين", "artist": "كاظم الساهر", "nationality": "عراقي"},
-            {"lyrics": "لا تزيديني لوعة", "artist": "كاظم الساهر", "nationality": "عراقي"},
-            {"lyrics": "مدرسة الحب", "artist": "كاظم الساهر", "nationality": "عراقي"},
-
-            # نانسي عجرم
-            {"lyrics": "آخ يا قلبي", "artist": "نانسي عجرم", "nationality": "لبنانية"},
-            {"lyrics": "عيني عليك", "artist": "نانسي عجرم", "nationality": "لبنانية"},
-            {"lyrics": "يا بنات", "artist": "نانسي عجرم", "nationality": "لبنانية"},
-            {"lyrics": "أهلاً بيك", "artist": "نانسي عجرم", "nationality": "لبنانية"},
-            {"lyrics": "ما تيجي هنا", "artist": "نانسي عجرم", "nationality": "لبنانية"},
-
-            # إليسا
-            {"lyrics": "بستناك", "artist": "إليسا", "nationality": "لبنانية"},
-            {"lyrics": "عكس اللي شايفينها", "artist": "إليسا", "nationality": "لبنانية"},
-            {"lyrics": "روح يا حبيبي", "artist": "إليسا", "nationality": "لبنانية"},
-            {"lyrics": "أسعد واحدة", "artist": "إليسا", "nationality": "لبنانية"},
-            {"lyrics": "عا بالي", "artist": "إليسا", "nationality": "لبنانية"},
-
-            # حسين الجسمي
-            {"lyrics": "بالبنط العريض", "artist": "حسين الجسمي", "nationality": "إماراتي"},
-            {"lyrics": "بشرة خير", "artist": "حسين الجسمي", "nationality": "إماراتي"},
-            {"lyrics": "محتاجك", "artist": "حسين الجسمي", "nationality": "إماراتي"},
-            {"lyrics": "انساك صعب", "artist": "حسين الجسمي", "nationality": "إماراتي"},
-            {"lyrics": "فقدتك", "artist": "حسين الجسمي", "nationality": "إماراتي"},
-
-            # وائل كفوري
-            {"lyrics": "شو حلو", "artist": "وائل كفوري", "nationality": "لبناني"},
-            {"lyrics": "بتحبيني ولا لأ", "artist": "وائل كفوري", "nationality": "لبناني"},
-            {"lyrics": "أنا وياك", "artist": "وائل كفوري", "nationality": "لبناني"},
-            {"lyrics": "قلبي اتخبى", "artist": "وائل كفوري", "nationality": "لبناني"},
-
-            # راشد الفارس
-            {"lyrics": "بنت عمي", "artist": "راشد الفارس", "nationality": "سعودي"},
-            {"lyrics": "يا ظالمني", "artist": "راشد الفارس", "nationality": "سعودي"},
-            {"lyrics": "سكة العودة", "artist": "راشد الفارس", "nationality": "سعودي"},
-            {"lyrics": "حبيتك بقوة", "artist": "راشد الفارس", "nationality": "سعودي"},
-
-            # رابح صقر
-            {"lyrics": "وينك عني", "artist": "رابح صقر", "nationality": "سعودي"},
-            {"lyrics": "يا قلبي حبيبي", "artist": "رابح صقر", "nationality": "سعودي"},
-            {"lyrics": "الحب الأول", "artist": "رابح صقر", "nationality": "سعودي"},
-            {"lyrics": "ما بقى شي", "artist": "رابح صقر", "nationality": "سعودي"},
-
-            # أصيل أبو بكر
-            {"lyrics": "المجهول", "artist": "أصيل أبو بكر", "nationality": "يمني"},
-            {"lyrics": "ديرتي", "artist": "أصيل أبو بكر", "nationality": "يمني"},
-            {"lyrics": "عايش معاها", "artist": "أصيل أبو بكر", "nationality": "يمني"},
-            {"lyrics": "غريب الدار", "artist": "أصيل أبو بكر", "nationality": "يمني"},
-
-            # فؤاد عبد الواحد
-            {"lyrics": "يا غايب عني", "artist": "فؤاد عبد الواحد", "nationality": "يمني"},
-            {"lyrics": "أنت الأمان", "artist": "فؤاد عبد الواحد", "nationality": "يمني"},
-            {"lyrics": "حبيبي ضاع مني", "artist": "فؤاد عبد الواحد", "nationality": "يمني"},
-
-            # وليد الشامي
-            {"lyrics": "أنت قلبي", "artist": "وليد الشامي", "nationality": "عراقي"},
-            {"lyrics": "يا ناسيني", "artist": "وليد الشامي", "nationality": "عراقي"},
-            {"lyrics": "ساكن في خيالي", "artist": "وليد الشامي", "nationality": "عراقي"},
-
-            # أصيل هميم
-            {"lyrics": "قلبي معاك", "artist": "أصيل هميم", "nationality": "عراقية"},
-            {"lyrics": "أشتاق لك", "artist": "أصيل هميم", "nationality": "عراقية"},
-            {"lyrics": "حبك غير", "artist": "أصيل هميم", "nationality": "عراقية"},
-
-            # فيروز
-            {"lyrics": "زهرة المدائن", "artist": "فيروز", "nationality": "لبنانية"},
-            {"lyrics": "سألوني الناس", "artist": "فيروز", "nationality": "لبنانية"},
-            {"lyrics": "كيفك انت", "artist": "فيروز", "nationality": "لبنانية"},
-
-            # ماجدة الرومي
-            {"lyrics": "كلمات", "artist": "ماجدة الرومي", "nationality": "لبنانية"},
-            {"lyrics": "بعدك على بالي", "artist": "ماجدة الرومي", "nationality": "لبنانية"},
+            {
+                "lyrics": "كل سنة وأنت طيب يا حبيبي",
+                "title": "كل سنة وأنت طيب",
+                "artist": "محمد عبد الوهاب"
+            },
+            {
+                "lyrics": "حبيبي يا نور العين يا ساكن خيالي",
+                "title": "نور العين",
+                "artist": "عمرو دياب"
+            },
+            {
+                "lyrics": "آه يا زمان يا زمان",
+                "title": "آه يا زمان",
+                "artist": "أم كلثوم"
+            },
+            {
+                "lyrics": "تعالى أحبك تعالى أنا بهواك",
+                "title": "تعالى أحبك",
+                "artist": "محمد منير"
+            },
+            {
+                "lyrics": "سيبوني اتفرج عليها",
+                "title": "سيبوني",
+                "artist": "عمرو دياب"
+            },
+            {
+                "lyrics": "على بالي حبيبي وانت عمري",
+                "title": "على بالي",
+                "artist": "عمرو دياب"
+            },
+            {
+                "lyrics": "أنا قلبي إليك ميال",
+                "title": "قلبي إليك ميال",
+                "artist": "أم كلثوم"
+            },
+            {
+                "lyrics": "يا مسافر وحدك",
+                "title": "يا مسافر وحدك",
+                "artist": "أم كلثوم"
+            },
+            {
+                "lyrics": "حبيبتي من تكون",
+                "title": "حبيبتي من تكون",
+                "artist": "كاظم الساهر"
+            },
+            {
+                "lyrics": "ثلاث دقات قلبي في حبك بدق",
+                "title": "ثلاث دقات",
+                "artist": "أبو"
+            },
+            {
+                "lyrics": "معلش يا قلبي معلش",
+                "title": "معلش",
+                "artist": "شيرين"
+            },
+            {
+                "lyrics": "كل ما أقول التوبة",
+                "title": "التوبة",
+                "artist": "محمد فؤاد"
+            },
+            {
+                "lyrics": "يا طير يا طاير طير",
+                "title": "يا طير",
+                "artist": "فيروز"
+            },
+            {
+                "lyrics": "بكرة بتنسى",
+                "title": "بكرة",
+                "artist": "وائل كفوري"
+            },
+            {
+                "lyrics": "ليه يا قلبي ليه",
+                "title": "ليه يا قلبي",
+                "artist": "عمرو دياب"
+            }
         ]
-
-    def normalize_text(self, text):
-        text = text.strip().lower()
-        text = re.sub(r'^ال', '', text)
-        text = text.replace('أ', 'ا').replace('إ', 'ا').replace('آ', 'ا')
-        text = text.replace('ة', 'ه').replace('ى', 'ي')
-        text = re.sub(r'[\u064B-\u065F]', '', text)
-        return text
-
+        
+        random.shuffle(self.songs)
+    
     def start_game(self):
-        song_data = random.choice(self.songs)
-        self.current_song = song_data
-        self.correct_answer = song_data["artist"]
-
-        message = (
-            f"🎵 خمن اسم المغني أو المغنية:\n\n"
-            f"\"{song_data['lyrics']}\"\n\n"
-            f"🪶 *تلميح:* (الجنسية: {song_data['nationality']})"
-        )
+        """بدء اللعبة"""
+        self.current_question = 0
+        return self.get_question()
+    
+    def get_question(self):
+        """الحصول على السؤال الحالي"""
+        song = self.songs[self.current_question % len(self.songs)]
+        self.current_answer = song["title"]
+        
+        message = f"🎵 خمن الأغنية ({self.current_question + 1}/{self.questions_count})\n\n"
+        message += f"🎤 من الكلمات:\n\n"
+        message += f"« {song['lyrics']} »\n\n"
+        message += "💡 اكتب اسم الأغنية أو:\n"
+        message += "• لمح - للحصول على تلميح\n"
+        message += "• جاوب - لعرض الإجابة"
+        
         return TextSendMessage(text=message)
-
-    def check_answer(self, answer, user_id, display_name):
-        if not self.current_song:
+    
+    def get_hint(self):
+        """الحصول على تلميح"""
+        song = self.songs[self.current_question % len(self.songs)]
+        return f"💡 تلميح: المطرب/ة: {song['artist']}"
+    
+    def check_answer(self, user_answer, user_id, display_name):
+        """فحص الإجابة"""
+        if not self.game_active:
             return None
-
-        user_answer = self.normalize_text(answer)
-        correct_answer = self.normalize_text(self.correct_answer)
-
-        if user_answer in correct_answer or correct_answer in user_answer:
-            points = 15
-            msg = (
-                f"✅ أحسنت يا {display_name}!\n"
-                f"🎤 المغني هو: {self.correct_answer}\n"
-                f"⭐ +{points} نقطة"
-            )
-            self.current_song = None
+        
+        # التحقق من أن المستخدم لم يجب بعد
+        if user_id in self.answered_users:
+            return None
+        
+        # أوامر خاصة
+        if user_answer == 'لمح':
+            hint = self.get_hint()
             return {
-                'message': msg,
-                'points': points,
-                'won': True,
-                'game_over': True,
-                'response': TextSendMessage(text=msg)
+                'message': hint,
+                'response': TextSendMessage(text=hint),
+                'points': 0
             }
-        else:
-            msg = (
-                f"❌ خطأ!\n"
-                f"الإجابة الصحيحة هي: {self.correct_answer}"
-            )
-            self.current_song = None
+        
+        if user_answer == 'جاوب':
+            song = self.songs[self.current_question % len(self.songs)]
+            reveal = f"✅ الإجابة الصحيحة:\n🎵 {song['title']}\n🎤 {song['artist']}"
+            next_q = self.next_question()
+            
+            if isinstance(next_q, dict) and next_q.get('game_over'):
+                return next_q
+            
+            message = f"{reveal}\n\n" + next_q.text if hasattr(next_q, 'text') else reveal
             return {
-                'message': msg,
-                'points': 0,
-                'game_over': True,
-                'response': TextSendMessage(text=msg)
+                'message': message,
+                'response': TextSendMessage(text=message),
+                'points': 0
             }
+        
+        # فحص الإجابة
+        normalized_answer = self.normalize_text(user_answer)
+        normalized_correct = self.normalize_text(self.current_answer)
+        
+        # قبول الإجابة إذا كانت تحتوي على جزء من العنوان
+        if normalized_correct in normalized_answer or normalized_answer in normalized_correct:
+            points = self.add_score(user_id, display_name, 10)
+            
+            song = self.songs[self.current_question % len(self.songs)]
+            
+            # الانتقال للسؤال التالي
+            next_q = self.next_question()
+            
+            if isinstance(next_q, dict) and next_q.get('game_over'):
+                next_q['points'] = points
+                return next_q
+            
+            message = f"✅ ممتاز يا {display_name}!\n"
+            message += f"🎵 {song['title']}\n"
+            message += f"🎤 {song['artist']}\n"
+            message += f"+{points} نقطة\n\n"
+            
+            if hasattr(next_q, 'text'):
+                message += next_q.text
+            
+            return {
+                'message': message,
+                'response': TextSendMessage(text=message),
+                'points': points
+            }
+        
+        return None
