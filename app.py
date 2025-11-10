@@ -683,6 +683,7 @@ def callback():
     return 'OK'
 
 # تحسين الأداء - معالجة الرسائل بشكل أسرع
+# تحسين الأداء - معالجة الرسائل بشكل أسرع
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     """معالج الرسائل الرئيسي - محسّن للسرعة"""
@@ -702,8 +703,8 @@ def handle_message(event):
         
         logger.info(f"رسالة من {display_name}: {text}")
     
-# الأوامر الأساسية
-if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
+        # الأوامر الأساسية
+        if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
         flex_message = {
             "type": "bubble",
             "size": "mega",
