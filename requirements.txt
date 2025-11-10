@@ -6,3 +6,4 @@ requests
 google-generativeai
 python-dateutil
 python-dotenv
+gevent
