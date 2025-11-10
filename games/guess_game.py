@@ -1,5 +1,5 @@
 """
-لعبة تخمين الأرقام
+لعبة التخمين بالفئات والحروف
 """
 from linebot.models import TextSendMessage
 from .base_game import BaseGame
@@ -7,13 +7,92 @@ import random
 
 
 class GuessGame(BaseGame):
-    """لعبة تخمين الرقم"""
+    """لعبة تخمين الكلمة من الفئة والحرف"""
     
     def __init__(self, line_bot_api):
         super().__init__(line_bot_api, questions_count=10)
-        self.min_range = 1
-        self.max_range = 50
-        self.attempts = {}  # عدد المحاولات لكل لاعب
+        
+        # قاعدة بيانات الكلمات مرتبة حسب الفئة والحرف
+        self.items = {
+            "المطبخ": {
+                "ق": ["قدر", "قلاية"],
+                "م": ["ملعقة", "مغرفة"],
+                "س": ["سكين", "صحن"],
+                "ف": ["فرن", "فنجان"],
+                "ك": ["كوب", "كاسة"],
+                "ط": ["طبق", "طنجرة"],
+                "ش": ["شوكة"],
+                "ب": ["برادة"],
+                "غ": ["غلاية"]
+            },
+            "غرفة النوم": {
+                "س": ["سرير"],
+                "و": ["وسادة"],
+                "م": ["مرآة", "مخدة"],
+                "خ": ["خزانة"],
+                "د": ["دولاب"],
+                "ل": ["لحاف"],
+                "ش": ["شراشف"],
+                "ب": ["بطانية"]
+            },
+            "غرفة الجلوس": {
+                "ك": ["كرسي", "كنب"],
+                "ط": ["طاولة"],
+                "ت": ["تلفاز", "تلفزيون"],
+                "س": ["ستارة"],
+                "ر": ["رف"],
+                "م": ["مكتب"],
+                "ش": ["شاشة"]
+            },
+            "الحمام": {
+                "ص": ["صابون"],
+                "م": ["مرحاض", "مغسلة", "مرآة"],
+                "ش": ["شامبو", "شطاف"],
+                "ف": ["فرشاة"],
+                "م": ["منشفة"],
+                "ح": ["حوض"]
+            },
+            "المدرسة": {
+                "ق": ["قلم"],
+                "د": ["دفتر"],
+                "ك": ["كتاب"],
+                "م": ["مسطرة", "ممحاة", "محفظة"],
+                "س": ["سبورة"],
+                "ط": ["طاولة"],
+                "ح": ["حقيبة"]
+            },
+            "السيارة": {
+                "م": ["محرك", "مقود"],
+                "ع": ["عجلة"],
+                "ك": ["كرسي"],
+                "ش": ["شباك"],
+                "ب": ["باب", "بنزين"],
+                "ف": ["فرامل"],
+                "ر": ["رادار"]
+            },
+            "الحديقة": {
+                "ش": ["شجرة"],
+                "ز": ["زهرة"],
+                "ع": ["عشب"],
+                "ب": ["بركة"],
+                "م": ["مقعد"],
+                "ج": ["جذع"],
+                "و": ["ورقة"]
+            }
+        }
+        
+        # إنشاء قائمة الأسئلة
+        self.questions_list = []
+        for category, letters_dict in self.items.items():
+            for letter, words in letters_dict.items():
+                if words:
+                    self.questions_list.append({
+                        "category": category,
+                        "letter": letter,
+                        "answers": words
+                    })
+        
+        random.shuffle(self.questions_list)
     
     def start_game(self):
         """بدء اللعبة"""
@@ -21,26 +100,30 @@ class GuessGame(BaseGame):
         return self.get_question()
     
     def get_question(self):
-        """توليد رقم جديد"""
-        # زيادة النطاق تدريجياً
-        self.max_range = 50 + (self.current_question * 10)
-        self.current_answer = random.randint(self.min_range, self.max_range)
-        self.attempts = {}
+        """الحصول على السؤال الحالي"""
+        q_data = self.questions_list[self.current_question % len(self.questions_list)]
+        self.current_answer = q_data["answers"]
         
-        message = f"❓ خمن الرقم ({self.current_question + 1}/{self.questions_count})\n\n"
-        message += f"🎯 خمن رقم بين {self.min_range} و {self.max_range}\n\n"
-        message += "💡 سأخبرك إذا كان الرقم أكبر أو أصغر"
+        message = f"خمن الكلمة ({self.current_question + 1}/{self.questions_count})\n\n"
+        message += f"الفئة: {q_data['category']}\n"
+        message += f"يبدأ بحرف: {q_data['letter']}\n\n"
+        message += "ما هو؟"
         
         return TextSendMessage(text=message)
     
     def check_answer(self, user_answer, user_id, display_name):
-        """فحص التخمين"""
+        """فحص الإجابة"""
         if not self.game_active:
+            return None
+        
+        # التحقق من أن المستخدم لم يجب بعد
+        if user_id in self.answered_users:
             return None
         
         # أوامر خاصة
         if user_answer == 'جاوب':
-            reveal = self.reveal_answer()
+            answers_text = " أو ".join(self.current_answer)
+            reveal = f"الإجابة الصحيحة: {answers_text}"
             next_q = self.next_question()
             
             if isinstance(next_q, dict) and next_q.get('game_over'):
@@ -53,32 +136,13 @@ class GuessGame(BaseGame):
                 'points': 0
             }
         
-        # محاولة تحويل الإجابة لرقم
-        try:
-            guess = int(user_answer.strip())
-            
-            # التحقق من أن الرقم في النطاق
-            if guess < self.min_range or guess > self.max_range:
-                return {
-                    'message': f"⚠️ الرقم يجب أن يكون بين {self.min_range} و {self.max_range}",
-                    'response': TextSendMessage(text=f"⚠️ الرقم يجب أن يكون بين {self.min_range} و {self.max_range}"),
-                    'points': 0
-                }
-            
-            # زيادة عدد المحاولات
-            if user_id not in self.attempts:
-                self.attempts[user_id] = 0
-            self.attempts[user_id] += 1
-            
-            correct_num = int(self.current_answer)
-            
-            if guess == correct_num:
-                # إجابة صحيحة
-                # منح نقاط حسب عدد المحاولات (كلما أقل محاولات كلما أكثر نقاط)
-                base_points = 15 - min(self.attempts[user_id], 10)
-                points = max(base_points, 5)  # على الأقل 5 نقاط
-                
-                self.add_score(user_id, display_name, points)
+        # فحص الإجابة
+        normalized_answer = self.normalize_text(user_answer)
+        
+        # التحقق من الإجابة
+        for correct_answer in self.current_answer:
+            if self.normalize_text(correct_answer) == normalized_answer:
+                points = self.add_score(user_id, display_name, 10)
                 
                 # الانتقال للسؤال التالي
                 next_q = self.next_question()
@@ -87,11 +151,7 @@ class GuessGame(BaseGame):
                     next_q['points'] = points
                     return next_q
                 
-                message = f"🎉 ممتاز يا {display_name}!\n"
-                message += f"✅ الرقم الصحيح: {correct_num}\n"
-                message += f"🎯 عدد المحاولات: {self.attempts[user_id]}\n"
-                message += f"+{points} نقطة\n\n"
-                
+                message = f"إجابة صحيحة يا {display_name}\n+{points} نقطة\n\n"
                 if hasattr(next_q, 'text'):
                     message += next_q.text
                 
@@ -100,24 +160,5 @@ class GuessGame(BaseGame):
                     'response': TextSendMessage(text=message),
                     'points': points
                 }
-            
-            elif guess < correct_num:
-                # الرقم أصغر
-                return {
-                    'message': f"📈 الرقم أكبر من {guess}\nحاول مرة أخرى!",
-                    'response': TextSendMessage(text=f"📈 الرقم أكبر من {guess}\nحاول مرة أخرى!"),
-                    'points': 0
-                }
-            
-            else:
-                # الرقم أكبر
-                return {
-                    'message': f"📉 الرقم أصغر من {guess}\nحاول مرة أخرى!",
-                    'response': TextSendMessage(text=f"📉 الرقم أصغر من {guess}\nحاول مرة أخرى!"),
-                    'points': 0
-                }
-        
-        except ValueError:
-            return None
         
         return None
