@@ -1507,4 +1507,3 @@ if __name__ == "__main__":
     logger.info(f"📊 اللاعبون المسجلون: {len(registered_players)}")
     logger.info(f"🎮 الألعاب النشطة: {len(active_games)}")
     app.run(host='0.0.0.0', port=port, debug=False)
-        '
