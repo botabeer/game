@@ -703,7 +703,7 @@ def handle_message(event):
         logger.info(f"رسالة من {display_name}: {text}")
     
 # الأوامر الأساسية
-‏if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
+        ‏if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
         flex_message = {
             "type": "bubble",
             "size": "mega",
