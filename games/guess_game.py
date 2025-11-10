@@ -107,7 +107,8 @@ class GuessGame(BaseGame):
         message = f"خمن الكلمة ({self.current_question + 1}/{self.questions_count})\n\n"
         message += f"الفئة: {q_data['category']}\n"
         message += f"يبدأ بحرف: {q_data['letter']}\n\n"
-        message += "ما هو؟"
+        message += "ما هو؟\n\n"
+        message += "• جاوب - لعرض الإجابة"
         
         return TextSendMessage(text=message)
     
