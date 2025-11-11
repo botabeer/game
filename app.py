@@ -702,10 +702,10 @@ def handle_message(event):
         game_id = event.source.group_id if hasattr(event.source, 'group_id') else user_id
         
         logger.info(f"رسالة من {display_name}: {text}")
-    
+        
         # الأوامر الأساسية
         if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
-        flex_message = {
+            flex_message = {
             "type": "bubble",
             "size": "mega",
             "header": {
@@ -922,9 +922,9 @@ def handle_message(event):
             FlexSendMessage(alt_text="مرحباً", contents=flex_message, quick_reply=get_quick_reply())
         )
         return
-    
-    elif text in ['أكثر', 'المزيد', 'more']:
-        more_message = {
+        
+        elif text in ['أكثر', 'المزيد', 'more']:
+            more_message = {
             "type": "bubble",
             "body": {
                 "type": "box",
