@@ -682,8 +682,6 @@ def callback():
     
     return 'OK'
 
-# تحسين الأداء - معالجة الرسائل بشكل أسرع
-# تحسين الأداء - معالجة الرسائل بشكل أسرع
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     """معالج الرسائل الرئيسي - محسّن للسرعة"""
@@ -706,645 +704,293 @@ def handle_message(event):
         # الأوامر الأساسية
         if text in ['البداية', 'ابدأ', 'start', 'قائمة', 'البوت']:
             flex_message = {
-            "type": "bubble",
-            "size": "mega",
-            "header": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "منصة الألعاب",
-                        "weight": "bold",
-                        "size": "xxl",
-                        "color": "#1a1a1a",
-                        "align": "center"
-                    },
-                    {
-                        "type": "text",
-                        "text": f"مرحباً {display_name}",
-                        "size": "md",
-                        "color": "#6a6a6a",
-                        "align": "center",
-                        "margin": "sm"
-                    }
-                ],
-                "backgroundColor": "#ffffff",
-                "paddingAll": "24px"
-            },
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "خطوات البدء",
-                                "weight": "bold",
-                                "size": "md",
-                                "color": "#2a2a2a"
-                            },
-                            {
-                                "type": "separator",
-                                "margin": "md",
-                                "color": "#e8e8e8"
-                            }
-                        ],
-                        "spacing": "sm"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "1",
-                                        "size": "sm",
-                                        "color": "#ffffff",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "اضغط على زر انضم للتسجيل",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#2a2a2a",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "2",
-                                        "size": "sm",
-                                        "color": "#2a2a2a",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "اختر لعبة من الأزرار أدناه",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#f5f5f5",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md",
-                                "margin": "sm"
-                            },
-                            {
-                                "type": "box",
-                                "layout": "horizontal",
-                                "contents": [
-                                    {
-                                        "type": "text",
-                                        "text": "3",
-                                        "size": "sm",
-                                        "color": "#2a2a2a",
-                                        "align": "center",
-                                        "weight": "bold",
-                                        "flex": 0
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "ابدأ اللعب واجمع النقاط",
-                                        "size": "sm",
-                                        "color": "#4a4a4a",
-                                        "flex": 1,
-                                        "margin": "md",
-                                        "wrap": True
-                                    }
-                                ],
-                                "backgroundColor": "#f5f5f5",
-                                "cornerRadius": "md",
-                                "paddingAll": "12px",
-                                "spacing": "md",
-                                "margin": "sm"
-                            }
-                        ],
-                        "margin": "md"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "15 لعبة متاحة",
-                                "size": "xs",
-                                "color": "#9a9a9a",
-                                "align": "center"
-                            },
-                            {
-                                "type": "text",
-                                "text": "إجاباتك تُحسب تلقائياً بعد التسجيل",
-                                "size": "xs",
-                                "color": "#9a9a9a",
-                                "align": "center",
-                                "margin": "xs"
-                            }
-                        ],
-                        "margin": "lg"
-                    }
-                ],
-                "backgroundColor": "#ffffff",
-                "paddingAll": "20px"
-            },
-            "footer": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "separator",
-                        "color": "#e8e8e8"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "contents": [
-                            {
-                                "type": "button",
-                                "action": {
-                                    "type": "message",
-                                    "label": "انضم",
-                                    "text": "انضم"
+                "type": "bubble",
+                "size": "mega",
+                "header": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "منصة الألعاب",
+                            "weight": "bold",
+                            "size": "xxl",
+                            "color": "#1a1a1a",
+                            "align": "center"
+                        },
+                        {
+                            "type": "text",
+                            "text": f"مرحباً {display_name}",
+                            "size": "md",
+                            "color": "#6a6a6a",
+                            "align": "center",
+                            "margin": "sm"
+                        }
+                    ],
+                    "backgroundColor": "#ffffff",
+                    "paddingAll": "24px"
+                },
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "خطوات البدء",
+                                    "weight": "bold",
+                                    "size": "md",
+                                    "color": "#2a2a2a"
                                 },
-                                "style": "primary",
-                                "color": "#2a2a2a",
-                                "height": "sm"
-                            },
-                            {
-                                "type": "button",
-                                "action": {
-                                    "type": "message",
-                                    "label": "مساعدة",
-                                    "text": "مساعدة"
+                                {
+                                    "type": "separator",
+                                    "margin": "md",
+                                    "color": "#e8e8e8"
+                                }
+                            ],
+                            "spacing": "sm"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "box",
+                                    "layout": "horizontal",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "1",
+                                            "size": "sm",
+                                            "color": "#ffffff",
+                                            "align": "center",
+                                            "weight": "bold",
+                                            "flex": 0
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "اضغط على زر انضم للتسجيل",
+                                            "size": "sm",
+                                            "color": "#4a4a4a",
+                                            "flex": 1,
+                                            "margin": "md",
+                                            "wrap": True
+                                        }
+                                    ],
+                                    "backgroundColor": "#2a2a2a",
+                                    "cornerRadius": "md",
+                                    "paddingAll": "12px",
+                                    "spacing": "md"
                                 },
-                                "style": "secondary",
-                                "height": "sm"
-                            }
-                        ],
-                        "spacing": "sm",
-                        "margin": "md"
-                    }
-                ],
-                "backgroundColor": "#f8f8f8",
-                "paddingAll": "16px"
+                                {
+                                    "type": "box",
+                                    "layout": "horizontal",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "2",
+                                            "size": "sm",
+                                            "color": "#2a2a2a",
+                                            "align": "center",
+                                            "weight": "bold",
+                                            "flex": 0
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "اختر لعبة من الأزرار أدناه",
+                                            "size": "sm",
+                                            "color": "#4a4a4a",
+                                            "flex": 1,
+                                            "margin": "md",
+                                            "wrap": True
+                                        }
+                                    ],
+                                    "backgroundColor": "#f5f5f5",
+                                    "cornerRadius": "md",
+                                    "paddingAll": "12px",
+                                    "spacing": "md",
+                                    "margin": "sm"
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "horizontal",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "3",
+                                            "size": "sm",
+                                            "color": "#2a2a2a",
+                                            "align": "center",
+                                            "weight": "bold",
+                                            "flex": 0
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": "ابدأ اللعب واجمع النقاط",
+                                            "size": "sm",
+                                            "color": "#4a4a4a",
+                                            "flex": 1,
+                                            "margin": "md",
+                                            "wrap": True
+                                        }
+                                    ],
+                                    "backgroundColor": "#f5f5f5",
+                                    "cornerRadius": "md",
+                                    "paddingAll": "12px",
+                                    "spacing": "md",
+                                    "margin": "sm"
+                                }
+                            ],
+                            "margin": "md"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "15 لعبة متاحة",
+                                    "size": "xs",
+                                    "color": "#9a9a9a",
+                                    "align": "center"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "إجاباتك تُحسب تلقائياً بعد التسجيل",
+                                    "size": "xs",
+                                    "color": "#9a9a9a",
+                                    "align": "center",
+                                    "margin": "xs"
+                                }
+                            ],
+                            "margin": "lg"
+                        }
+                    ],
+                    "backgroundColor": "#ffffff",
+                    "paddingAll": "20px"
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "separator",
+                            "color": "#e8e8e8"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "horizontal",
+                            "contents": [
+                                {
+                                    "type": "button",
+                                    "action": {
+                                        "type": "message",
+                                        "label": "انضم",
+                                        "text": "انضم"
+                                    },
+                                    "style": "primary",
+                                    "color": "#2a2a2a",
+                                    "height": "sm"
+                                },
+                                {
+                                    "type": "button",
+                                    "action": {
+                                        "type": "message",
+                                        "label": "مساعدة",
+                                        "text": "مساعدة"
+                                    },
+                                    "style": "secondary",
+                                    "height": "sm"
+                                }
+                            ],
+                            "spacing": "sm",
+                            "margin": "md"
+                        }
+                    ],
+                    "backgroundColor": "#f8f8f8",
+                    "paddingAll": "16px"
+                }
             }
-        }
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage(alt_text="مرحباً", contents=flex_message, quick_reply=get_quick_reply())
-        )
-        return
+            
+            line_bot_api.reply_message(
+                event.reply_token,
+                FlexSendMessage(alt_text="مرحباً", contents=flex_message, quick_reply=get_quick_reply())
+            )
+            return
         
         elif text in ['أكثر', 'المزيد', 'more']:
             more_message = {
-            "type": "bubble",
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "text",
-                        "text": "ألعاب إضافية",
-                        "weight": "bold",
-                        "size": "xl",
-                        "color": "#1a1a1a",
-                        "align": "center"
-                    },
-                    {
-                        "type": "separator",
-                        "margin": "lg",
-                        "color": "#e8e8e8"
-                    },
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "اختر من الأزرار أدناه",
-                                "size": "sm",
-                                "color": "#6a6a6a",
-                                "align": "center"
-                            }
-                        ],
-                        "margin": "lg"
-                    }
-                ],
-                "backgroundColor": "#ffffff",
-                "paddingAll": "24px"
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "ألعاب إضافية",
+                            "weight": "bold",
+                            "size": "xl",
+                            "color": "#1a1a1a",
+                            "align": "center"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "lg",
+                            "color": "#e8e8e8"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "اختر من الأزرار أدناه",
+                                    "size": "sm",
+                                    "color": "#6a6a6a",
+                                    "align": "center"
+                                }
+                            ],
+                            "margin": "lg"
+                        }
+                    ],
+                    "backgroundColor": "#ffffff",
+                    "paddingAll": "24px"
+                }
             }
-        }
-        
-        line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage(alt_text="ألعاب إضافية", contents=more_message, quick_reply=get_more_quick_reply())
-        )
-        return
+            
+            line_bot_api.reply_message(
+                event.reply_token,
+                FlexSendMessage(alt_text="ألعاب إضافية", contents=more_message, quick_reply=get_more_quick_reply())
+            )
+            return
         
         elif text == 'مساعدة':
             line_bot_api.reply_message(
-            event.reply_token,
-            FlexSendMessage(alt_text="مساعدة", contents=get_help_message(), quick_reply=get_quick_reply())
-        )
-        return
-    
-    elif text == 'نقاطي':
-        stats = get_user_stats(user_id)
-        if stats:
-            status = "مسجل" if user_id in registered_players else "غير مسجل"
-            status_color = "#2a2a2a" if user_id in registered_players else "#9a9a9a"
-            win_rate = (stats['wins'] / stats['games_played'] * 100) if stats['games_played'] > 0 else 0
-            
-            flex_stats = {
-                "type": "bubble",
-                "size": "mega",
-                "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "إحصائياتك",
-                            "weight": "bold",
-                            "size": "xl",
-                            "color": "#1a1a1a",
-                            "align": "center"
-                        },
-                        {
-                            "type": "text",
-                            "text": display_name,
-                            "size": "sm",
-                            "color": "#6a6a6a",
-                            "align": "center",
-                            "margin": "sm"
-                        }
-                    ],
-                    "backgroundColor": "#ffffff",
-                    "paddingAll": "20px"
-                },
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "الحالة",
-                                    "size": "sm",
-                                    "color": "#6a6a6a",
-                                    "flex": 2
-                                },
-                                {
-                                    "type": "text",
-                                    "text": status,
-                                    "size": "sm",
-                                    "color": status_color,
-                                    "flex": 3,
-                                    "align": "end",
-                                    "weight": "bold"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "separator",
-                            "margin": "md",
-                            "color": "#e8e8e8"
-                        },
-                        {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "النقاط",
-                                    "size": "sm",
-                                    "color": "#6a6a6a",
-                                    "flex": 2
-                                },
-                                {
-                                    "type": "text",
-                                    "text": str(stats['total_points']),
-                                    "size": "xl",
-                                    "color": "#1a1a1a",
-                                    "flex": 3,
-                                    "align": "end",
-                                    "weight": "bold"
-                                }
-                            ],
-                            "margin": "md"
-                        },
-                        {
-                            "type": "separator",
-                            "margin": "md",
-                            "color": "#e8e8e8"
-                        },
-                        {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "الألعاب",
-                                    "size": "sm",
-                                    "color": "#6a6a6a",
-                                    "flex": 2
-                                },
-                                {
-                                    "type": "text",
-                                    "text": str(stats['games_played']),
-                                    "size": "sm",
-                                    "color": "#2a2a2a",
-                                    "flex": 3,
-                                    "align": "end",
-                                    "weight": "bold"
-                                }
-                            ],
-                            "margin": "md"
-                        },
-                        {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "الفوز",
-                                    "size": "sm",
-                                    "color": "#6a6a6a",
-                                    "flex": 2
-                                },
-                                {
-                                    "type": "text",
-                                    "text": str(stats['wins']),
-                                    "size": "sm",
-                                    "color": "#2a2a2a",
-                                    "flex": 3,
-                                    "align": "end",
-                                    "weight": "bold"
-                                }
-                            ],
-                            "margin": "sm"
-                        },
-                        {
-                            "type": "box",
-                            "layout": "horizontal",
-                            "contents": [
-                                {
-                                    "type": "text",
-                                    "text": "نسبة الفوز",
-                                    "size": "sm",
-                                    "color": "#6a6a6a",
-                                    "flex": 2
-                                },
-                                {
-                                    "type": "text",
-                                    "text": f"{win_rate:.1f}%",
-                                    "size": "sm",
-                                    "color": "#2a2a2a",
-                                    "flex": 3,
-                                    "align": "end",
-                                    "weight": "bold"
-                                }
-                            ],
-                            "margin": "sm"
-                        }
-                    ],
-                    "backgroundColor": "#ffffff",
-                    "paddingAll": "20px"
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "separator",
-                            "color": "#e8e8e8"
-                        },
-                        {
-                            "type": "button",
-                            "action": {
-                                "type": "message",
-                                "label": "الصدارة",
-                                "text": "الصدارة"
-                            },
-                            "style": "secondary",
-                            "height": "sm",
-                            "margin": "md"
-                        }
-                    ],
-                    "backgroundColor": "#f8f8f8",
-                    "paddingAll": "16px"
-                }
-            }
-            
-            line_bot_api.reply_message(
                 event.reply_token,
-                FlexSendMessage(alt_text="إحصائياتك", contents=flex_stats, quick_reply=get_quick_reply())
+                FlexSendMessage(alt_text="مساعدة", contents=get_help_message(), quick_reply=get_quick_reply())
             )
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="لم تلعب أي لعبة بعد\n\nاكتب 'انضم' للتسجيل والبدء", quick_reply=get_quick_reply())
-            )
-        return
-    
-    elif text == 'الصدارة':
-        leaders = get_leaderboard()
-        if leaders:
-            # بناء قائمة اللاعبين
-            players_list = []
-            for i, leader in enumerate(leaders, 1):
-                # الألوان المحدّثة
-                if i <= 3:
-                    rank_bg = "#4a4a4a"  # رمادي غامق للمراكز الثلاثة الأولى
-                    rank_color = "#ffffff"  # نص أبيض
-                    name_color = "#ffffff"  # اسم أبيض
-                else:
-                    rank_bg = "#f5f5f5"  # رمادي فاتح للباقي
-                    rank_color = "#2a2a2a"  # نص أسود
-                    name_color = "#4a4a4a"  # اسم رمادي
+            return
+        
+        elif text == 'نقاطي':
+            stats = get_user_stats(user_id)
+            if stats:
+                status = "مسجل" if user_id in registered_players else "غير مسجل"
+                status_color = "#2a2a2a" if user_id in registered_players else "#9a9a9a"
+                win_rate = (stats['wins'] / stats['games_played'] * 100) if stats['games_played'] > 0 else 0
                 
-                player_box = {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": str(i),
-                            "size": "sm",
-                            "color": rank_color,
-                            "align": "center",
-                            "weight": "bold",
-                            "flex": 0
-                        },
-                        {
-                            "type": "text",
-                            "text": leader['display_name'],
-                            "size": "sm",
-                            "color": name_color,
-                            "flex": 3,
-                            "margin": "md",
-                            "weight": "bold" if i <= 3 else "regular"
-                        },
-                        {
-                            "type": "text",
-                            "text": str(leader['total_points']),
-                            "size": "sm",
-                            "color": name_color,
-                            "flex": 1,
-                            "align": "end",
-                            "weight": "bold" if i <= 3 else "regular"
-                        }
-                    ],
-                    "backgroundColor": rank_bg,
-                    "cornerRadius": "md",
-                    "paddingAll": "12px",
-                    "spacing": "md",
-                    "margin": "xs" if i > 1 else "none"
-                }
-                players_list.append(player_box)
-            
-            flex_leaderboard = {
-                "type": "bubble",
-                "size": "mega",
-                "header": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "text": "لوحة الصدارة",
-                            "weight": "bold",
-                            "size": "xl",
-                            "color": "#1a1a1a",
-                            "align": "center"
-                        },
-                        {
-                            "type": "text",
-                            "text": "أفضل اللاعبين",
-                            "size": "sm",
-                            "color": "#6a6a6a",
-                            "align": "center",
-                            "margin": "sm"
-                        }
-                    ],
-                    "backgroundColor": "#ffffff",
-                    "paddingAll": "20px"
-                },
-                "body": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": players_list,
-                    "backgroundColor": "#ffffff",
-                    "paddingAll": "20px"
-                },
-                "footer": {
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "separator",
-                            "color": "#e8e8e8"
-                        },
-                        {
-                            "type": "button",
-                            "action": {
-                                "type": "message",
-                                "label": "نقاطي",
-                                "text": "نقاطي"
-                            },
-                            "style": "secondary",
-                            "height": "sm",
-                            "margin": "md"
-                        }
-                    ],
-                    "backgroundColor": "#f8f8f8",
-                    "paddingAll": "16px"
-                }
-            }
-            
-            line_bot_api.reply_message(
-                event.reply_token,
-                FlexSendMessage(alt_text="لوحة الصدارة", contents=flex_leaderboard, quick_reply=get_quick_reply())
-            )
-        else:
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="لا توجد بيانات بعد", quick_reply=get_quick_reply())
-            )
-        return
-    
-    elif text in ['إيقاف', 'ايقاف', 'stop']:
-        with games_lock:
-            if game_id in active_games:
-                game_type = active_games[game_id]['type']
-                del active_games[game_id]
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=f"تم إيقاف لعبة {game_type}", quick_reply=get_quick_reply())
-                )
-            else:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text="لا توجد لعبة نشطة", quick_reply=get_quick_reply())
-                )
-        return
-    
-    elif text in ['انضم', 'تسجيل', 'join']:
-        with players_lock:
-            if user_id in registered_players:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=f"أنت مسجل بالفعل يا {display_name}\n\nيمكنك اللعب في جميع الألعاب", quick_reply=get_quick_reply())
-                )
-            else:
-                registered_players.add(user_id)
-                
-                with games_lock:
-                    for gid, game_data in active_games.items():
-                        if 'participants' not in game_data:
-                            game_data['participants'] = set()
-                        game_data['participants'].add(user_id)
-                
-                join_message = {
+                flex_stats = {
                     "type": "bubble",
-                    "body": {
+                    "size": "mega",
+                    "header": {
                         "type": "box",
                         "layout": "vertical",
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "تم التسجيل بنجاح",
+                                "text": "إحصائياتك",
                                 "weight": "bold",
                                 "size": "xl",
                                 "color": "#1a1a1a",
@@ -1352,161 +998,508 @@ def handle_message(event):
                             },
                             {
                                 "type": "text",
-                                "text": f"مرحباً بك {display_name}",
-                                "size": "md",
+                                "text": display_name,
+                                "size": "sm",
                                 "color": "#6a6a6a",
                                 "align": "center",
+                                "margin": "sm"
+                            }
+                        ],
+                        "backgroundColor": "#ffffff",
+                        "paddingAll": "20px"
+                    },
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "horizontal",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "الحالة",
+                                        "size": "sm",
+                                        "color": "#6a6a6a",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": status,
+                                        "size": "sm",
+                                        "color": status_color,
+                                        "flex": 3,
+                                        "align": "end",
+                                        "weight": "bold"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "separator",
+                                "margin": "md",
+                                "color": "#e8e8e8"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "horizontal",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "النقاط",
+                                        "size": "sm",
+                                        "color": "#6a6a6a",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": str(stats['total_points']),
+                                        "size": "xl",
+                                        "color": "#1a1a1a",
+                                        "flex": 3,
+                                        "align": "end",
+                                        "weight": "bold"
+                                    }
+                                ],
                                 "margin": "md"
                             },
                             {
                                 "type": "separator",
-                                "margin": "xl",
+                                "margin": "md",
                                 "color": "#e8e8e8"
                             },
                             {
-                                "type": "text",
-                                "text": "يمكنك الآن اللعب في جميع الألعاب\n\nإجاباتك ستُحسب تلقائياً",
-                                "size": "sm",
-                                "color": "#4a4a4a",
-                                "align": "center",
-                                "wrap": True,
-                                "margin": "xl"
+                                "type": "box",
+                                "layout": "horizontal",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "الألعاب",
+                                        "size": "sm",
+                                        "color": "#6a6a6a",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": str(stats['games_played']),
+                                        "size": "sm",
+                                        "color": "#2a2a2a",
+                                        "flex": 3,
+                                        "align": "end",
+                                        "weight": "bold"
+                                    }
+                                ],
+                                "margin": "md"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "horizontal",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "الفوز",
+                                        "size": "sm",
+                                        "color": "#6a6a6a",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": str(stats['wins']),
+                                        "size": "sm",
+                                        "color": "#2a2a2a",
+                                        "flex": 3,
+                                        "align": "end",
+                                        "weight": "bold"
+                                    }
+                                ],
+                                "margin": "sm"
+                            },
+                            {
+                                "type": "box",
+                                "layout": "horizontal",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "نسبة الفوز",
+                                        "size": "sm",
+                                        "color": "#6a6a6a",
+                                        "flex": 2
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": f"{win_rate:.1f}%",
+                                        "size": "sm",
+                                        "color": "#2a2a2a",
+                                        "flex": 3,
+                                        "align": "end",
+                                        "weight": "bold"
+                                    }
+                                ],
+                                "margin": "sm"
                             }
                         ],
                         "backgroundColor": "#ffffff",
-                        "paddingAll": "28px"
+                        "paddingAll": "20px"
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "separator",
+                                "color": "#e8e8e8"
+                            },
+                            {
+                                "type": "button",
+                                "action": {
+                                    "type": "message",
+                                    "label": "الصدارة",
+                                    "text": "الصدارة"
+                                },
+                                "style": "secondary",
+                                "height": "sm",
+                                "margin": "md"
+                            }
+                        ],
+                        "backgroundColor": "#f8f8f8",
+                        "paddingAll": "16px"
                     }
                 }
                 
                 line_bot_api.reply_message(
                     event.reply_token,
-                    FlexSendMessage(alt_text="تم التسجيل", contents=join_message, quick_reply=get_quick_reply())
+                    FlexSendMessage(alt_text="إحصائياتك", contents=flex_stats, quick_reply=get_quick_reply())
                 )
-                logger.info(f"انضم لاعب جديد: {display_name}")
-        return
-    
-    elif text in ['انسحب', 'خروج', 'leave']:
-        with players_lock:
-            if user_id in registered_players:
-                registered_players.remove(user_id)
-                
-                with games_lock:
-                    for gid, game_data in active_games.items():
-                        if 'participants' in game_data and user_id in game_data['participants']:
-                            game_data['participants'].remove(user_id)
-                
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=f"تم انسحابك يا {display_name}\n\nيمكنك الانضمام مرة أخرى بكتابة 'انضم'", quick_reply=get_quick_reply())
-                )
-                logger.info(f"انسحب لاعب: {display_name}")
             else:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text="أنت غير مسجل\n\nاكتب 'انضم' للتسجيل", quick_reply=get_quick_reply())
+                    TextSendMessage(text="لم تلعب أي لعبة بعد\n\nاكتب 'انضم' للتسجيل والبدء", quick_reply=get_quick_reply())
                 )
-        return
-    
-    # بدء الألعاب
-    games_map = {
-        'ذكاء': (IQGame, 'ذكاء'),
-        'كلمة ولون': (WordColorGame, 'كلمة ولون'),
-        'لون': (WordColorGame, 'كلمة ولون'),
-        'سلسلة': (ChainWordsGame, 'سلسلة'),
-        'ترتيب الحروف': (ScrambleWordGame, 'ترتيب'),
-        'ترتيب': (ScrambleWordGame, 'ترتيب'),
-        'تكوين كلمات': (LettersWordsGame, 'تكوين'),
-        'تكوين': (LettersWordsGame, 'تكوين'),
-        'أسرع': (FastTypingGame, 'أسرع'),
-        'لعبة': (HumanAnimalPlantGame, 'لعبة'),
-        'خمن': (GuessGame, 'خمن'),
-        'توافق': (CompatibilityGame, 'توافق'),
-        'رياضيات': (MathGame, 'رياضيات'),
-        'ذاكرة': (MemoryGame, 'ذاكرة'),
-        'لغز': (RiddleGame, 'لغز'),
-        'ضد': (OppositeGame, 'ضد'),
-        'إيموجي': (EmojiGame, 'إيموجي'),
-        'أغنية': (SongGame, 'أغنية')
-    }
-    
-    if text in games_map:
-        game_class, game_type = games_map[text]
-        
-        if text == 'توافق':
-            with games_lock:
-                with players_lock:
-                    participants = registered_players.copy()
-                    participants.add(user_id)
-                
-                game = CompatibilityGame(line_bot_api)
-                active_games[game_id] = {
-                    'game': game,
-                    'type': 'توافق',
-                    'created_at': datetime.now(),
-                    'participants': participants
-                }
-            
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="💖 لعبة التوافق!\n\nاكتب اسمين مفصولين بمسافة\nمثال: أحمد فاطمة", quick_reply=get_quick_reply())
-            )
             return
         
-        start_game(game_id, game_class, game_type, user_id, event)
-        return
-    
-    # معالجة إجابات الألعاب النشطة
-    if game_id in active_games:
-        game_data = active_games[game_id]
-        
-        with players_lock:
-            is_registered = user_id in registered_players
-        
-        if not is_registered and 'participants' in game_data and user_id not in game_data['participants']:
-            return
-        
-        game = game_data['game']
-        game_type = game_data['type']
-        
-        try:
-            result = game.check_answer(text, user_id, display_name)
-            
-            if result:
-                points = result.get('points', 0)
-                if points > 0:
-                    update_user_points(user_id, display_name, points, 
-                                     result.get('won', False), game_type)
-                
-                if result.get('game_over', False):
-                    with games_lock:
-                        if game_id in active_games:
-                            del active_games[game_id]
+        elif text == 'الصدارة':
+            leaders = get_leaderboard()
+            if leaders:
+                players_list = []
+                for i, leader in enumerate(leaders, 1):
+                    if i <= 3:
+                        rank_bg = "#4a4a4a"
+                        rank_color = "#ffffff"
+                        name_color = "#ffffff"
+                    else:
+                        rank_bg = "#f5f5f5"
+                        rank_color = "#2a2a2a"
+                        name_color = "#4a4a4a"
                     
-                    response = TextSendMessage(
-                        text=result.get('message', 'انتهت اللعبة'),
-                        quick_reply=get_quick_reply()
+                    player_box = {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": str(i),
+                                "size": "sm",
+                                "color": rank_color,
+                                "align": "center",
+                                "weight": "bold",
+                                "flex": 0
+                            },
+                            {
+                                "type": "text",
+                                "text": leader['display_name'],
+                                "size": "sm",
+                                "color": name_color,
+                                "flex": 3,
+                                "margin": "md",
+                                "weight": "bold" if i <= 3 else "regular"
+                            },
+                            {
+                                "type": "text",
+                                "text": str(leader['total_points']),
+                                "size": "sm",
+                                "color": name_color,
+                                "flex": 1,
+                                "align": "end",
+                                "weight": "bold" if i <= 3 else "regular"
+                            }
+                        ],
+                        "backgroundColor": rank_bg,
+                        "cornerRadius": "md",
+                        "paddingAll": "12px",
+                        "spacing": "md",
+                        "margin": "xs" if i > 1 else "none"
+                    }
+                    players_list.append(player_box)
+                
+                flex_leaderboard = {
+                    "type": "bubble",
+                    "size": "mega",
+                    "header": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "لوحة الصدارة",
+                                "weight": "bold",
+                                "size": "xl",
+                                "color": "#1a1a1a",
+                                "align": "center"
+                            },
+                            {
+                                "type": "text",
+                                "text": "أفضل اللاعبين",
+                                "size": "sm",
+                                "color": "#6a6a6a",
+                                "align": "center",
+                                "margin": "sm"
+                            }
+                        ],
+                        "backgroundColor": "#ffffff",
+                        "paddingAll": "20px"
+                    },
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": players_list,
+                        "backgroundColor": "#ffffff",
+                        "paddingAll": "20px"
+                    },
+                    "footer": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "separator",
+                                "color": "#e8e8e8"
+                            },
+                            {
+                                "type": "button",
+                                "action": {
+                                    "type": "message",
+                                    "label": "نقاطي",
+                                    "text": "نقاطي"
+                                },
+                                "style": "secondary",
+                                "height": "sm",
+                                "margin": "md"
+                            }
+                        ],
+                        "backgroundColor": "#f8f8f8",
+                        "paddingAll": "16px"
+                    }
+                }
+                
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    FlexSendMessage(alt_text="لوحة الصدارة", contents=flex_leaderboard, quick_reply=get_quick_reply())
+                )
+            else:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="لا توجد بيانات بعد", quick_reply=get_quick_reply())
+                )
+            return
+        
+        elif text in ['إيقاف', 'ايقاف', 'stop']:
+            with games_lock:
+                if game_id in active_games:
+                    game_type = active_games[game_id]['type']
+                    del active_games[game_id]
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=f"تم إيقاف لعبة {game_type}", quick_reply=get_quick_reply())
                     )
                 else:
-                    response = result.get('response', TextSendMessage(text=result.get('message', '')))
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="لا توجد لعبة نشطة", quick_reply=get_quick_reply())
+                    )
+            return
+        
+        elif text in ['انضم', 'تسجيل', 'join']:
+            with players_lock:
+                if user_id in registered_players:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=f"أنت مسجل بالفعل يا {display_name}\n\nيمكنك اللعب في جميع الألعاب", quick_reply=get_quick_reply())
+                    )
+                else:
+                    registered_players.add(user_id)
                     
-                    # إضافة الأزرار دائماً
-                    if isinstance(response, TextSendMessage):
-                        response.quick_reply = get_quick_reply()
-                    elif isinstance(response, FlexSendMessage):
-                        # لا نضيف quick_reply للـ Flex Messages
-                        pass
+                    with games_lock:
+                        for gid, game_data in active_games.items():
+                            if 'participants' not in game_data:
+                                game_data['participants'] = set()
+                            game_data['participants'].add(user_id)
+                    
+                    join_message = {
+                        "type": "bubble",
+                        "body": {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [
+                                {
+                                    "type": "text",
+                                    "text": "تم التسجيل بنجاح",
+                                    "weight": "bold",
+                                    "size": "xl",
+                                    "color": "#1a1a1a",
+                                    "align": "center"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": f"مرحباً بك {display_name}",
+                                    "size": "md",
+                                    "color": "#6a6a6a",
+                                    "align": "center",
+                                    "margin": "md"
+                                },
+                                {
+                                    "type": "separator",
+                                    "margin": "xl",
+                                    "color": "#e8e8e8"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "يمكنك الآن اللعب في جميع الألعاب\n\nإجاباتك ستُحسب تلقائياً",
+                                    "size": "sm",
+                                    "color": "#4a4a4a",
+                                    "align": "center",
+                                    "wrap": True,
+                                    "margin": "xl"
+                                }
+                            ],
+                            "backgroundColor": "#ffffff",
+                            "paddingAll": "28px"
+                        }
+                    }
+                    
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        FlexSendMessage(alt_text="تم التسجيل", contents=join_message, quick_reply=get_quick_reply())
+                    )
+                    logger.info(f"انضم لاعب جديد: {display_name}")
+            return
+        
+        elif text in ['انسحب', 'خروج', 'leave']:
+            with players_lock:
+                if user_id in registered_players:
+                    registered_players.remove(user_id)
+                    
+                    with games_lock:
+                        for gid, game_data in active_games.items():
+                            if 'participants' in game_data and user_id in game_data['participants']:
+                                game_data['participants'].remove(user_id)
+                    
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=f"تم انسحابك يا {display_name}\n\nيمكنك الانضمام مرة أخرى بكتابة 'انضم'", quick_reply=get_quick_reply())
+                    )
+                    logger.info(f"انسحب لاعب: {display_name}")
+                else:
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text="أنت غير مسجل\n\nاكتب 'انضم' للتسجيل", quick_reply=get_quick_reply())
+                    )
+            return
+        
+        # بدء الألعاب
+        games_map = {
+            'ذكاء': (IQGame, 'ذكاء'),
+            'كلمة ولون': (WordColorGame, 'كلمة ولون'),
+            'لون': (WordColorGame, 'كلمة ولون'),
+            'سلسلة': (ChainWordsGame, 'سلسلة'),
+            'ترتيب الحروف': (ScrambleWordGame, 'ترتيب'),
+            'ترتيب': (ScrambleWordGame, 'ترتيب'),
+            'تكوين كلمات': (LettersWordsGame, 'تكوين'),
+            'تكوين': (LettersWordsGame, 'تكوين'),
+            'أسرع': (FastTypingGame, 'أسرع'),
+            'لعبة': (HumanAnimalPlantGame, 'لعبة'),
+            'خمن': (GuessGame, 'خمن'),
+            'توافق': (CompatibilityGame, 'توافق'),
+            'رياضيات': (MathGame, 'رياضيات'),
+            'ذاكرة': (MemoryGame, 'ذاكرة'),
+            'لغز': (RiddleGame, 'لغز'),
+            'ضد': (OppositeGame, 'ضد'),
+            'إيموجي': (EmojiGame, 'إيموجي'),
+            'أغنية': (SongGame, 'أغنية')
+        }
+        
+        if text in games_map:
+            game_class, game_type = games_map[text]
+            
+            if text == 'توافق':
+                with games_lock:
+                    with players_lock:
+                        participants = registered_players.copy()
+                        participants.add(user_id)
+                    
+                    game = CompatibilityGame(line_bot_api)
+                    active_games[game_id] = {
+                        'game': game,
+                        'type': 'توافق',
+                        'created_at': datetime.now(),
+                        'participants': participants
+                    }
                 
-                line_bot_api.reply_message(event.reply_token, response)
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="💖 لعبة التوافق!\n\nاكتب اسمين مفصولين بمسافة\nمثال: أحمد فاطمة", quick_reply=get_quick_reply())
+                )
+                return
+            
+            start_game(game_id, game_class, game_type, user_id, event)
             return
-        except Exception as e:
-            logger.error(f"خطأ في معالجة إجابة اللعبة: {e}")
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="❌ حدث خطأ. حاول مرة أخرى.", quick_reply=get_quick_reply())
-            )
-            return
+        
+        # معالجة إجابات الألعاب النشطة
+        if game_id in active_games:
+            game_data = active_games[game_id]
+            
+            with players_lock:
+                is_registered = user_id in registered_players
+            
+            if not is_registered and 'participants' in game_data and user_id not in game_data['participants']:
+                return
+            
+            game = game_data['game']
+            game_type = game_data['type']
+            
+            try:
+                result = game.check_answer(text, user_id, display_name)
+                
+                if result:
+                    points = result.get('points', 0)
+                    if points > 0:
+                        update_user_points(user_id, display_name, points, 
+                                         result.get('won', False), game_type)
+                    
+                    if result.get('game_over', False):
+                        with games_lock:
+                            if game_id in active_games:
+                                del active_games[game_id]
+                        
+                        response = TextSendMessage(
+                            text=result.get('message', 'انتهت اللعبة'),
+                            quick_reply=get_quick_reply()
+                        )
+                    else:
+                        response = result.get('response', TextSendMessage(text=result.get('message', '')))
+                        
+                        if isinstance(response, TextSendMessage):
+                            response.quick_reply = get_quick_reply()
+                    
+                    line_bot_api.reply_message(event.reply_token, response)
+                return
+            except Exception as e:
+                logger.error(f"خطأ في معالجة إجابة اللعبة: {e}")
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="❌ حدث خطأ. حاول مرة أخرى.", quick_reply=get_quick_reply())
+                )
+                return
     
-    return
+    except Exception as e:
+        logger.error(f"خطأ في معالجة الرسالة: {e}")
 
 @app.errorhandler(Exception)
 def handle_error(error):
